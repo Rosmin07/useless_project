@@ -2,11 +2,11 @@
 
 
 
-# [Project Name] 🎯
+# [G-Force] 🎯
 
 
 ## Basic Details
-### Team Name: [Name]
+### Team Name: [Wonderminds]
 
 
 ### Team Members
