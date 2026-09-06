@@ -2,7 +2,7 @@
 
 
 
-# [G-Force] 🎯
+# [Smash_to_Grow] 🎯
 
 
 ## Basic Details
@@ -14,7 +14,10 @@
 - Member 2: Lena Marium Thomas - Viswajyothi College of Engineering and Technology
 
 ### Project Description
-[2-3 lines about what your project does]
+A completely unnecessary gravity simulator powered by **keyboard smashing**! ⌨️💥
+Smash any key to grow Newton’s apple tree, cycle through **four seasons**, summon bees, and even call down lightning. 🌳🐝⚡
+Keep smashing until the tree is fully grown, Newton arrives, and the legendary apple finally falls. 🍎
+Because apparently, discovering gravity requires **100% keyboard abuse and 0% actual science**. 😂
 
 ### The Problem (that doesn't exist)
 [What ridiculous problem are you solving?]
