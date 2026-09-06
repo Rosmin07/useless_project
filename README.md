@@ -89,6 +89,33 @@ For Software:
 <img width="128" height="64" alt="git (1)" src="b.png" />
 2.interface
 
+<img width="128" height="64" alt="git (1)" src="c.png" />
+3.menu bar
+
+<img width="128" height="64" alt="git (1)" src="d.png" />
+4.season changing
+
+<img width="128" height="64" alt="git (1)" src="e.png" />
+5.season changing
+
+<img width="128" height="64" alt="git (1)" src="f.png" />
+6.season changing
+
+<img width="128" height="64" alt="git (1)" src="g.png" />
+7.lightining
+
+<img width="128" height="64" alt="git (1)" src="h.png" />
+8.newton coming towards the tree
+
+<img width="128" height="64" alt="git (1)" src="i.png" />
+9.apple fall on newton head
+
+<img width="128" height="64" alt="git (1)" src="j.png" />
+10.discovered gravity
+
+<img width="128" height="64" alt="git (1)" src="k.png" />
+11.newton retired
+
 # Diagrams
 ![Workflow](Add your workflow/architecture diagram here)
 *Add caption explaining your workflow*
