@@ -1,0 +1,812 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>The Discovery of Gravity - Interactive Simulator</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      overflow: hidden;
+      background-color: #0d1117;
+      font-family: 'Georgia', serif;
+      user-select: none;
+    }
+
+    /* Start / Welcome Screen Overlay */
+    #start-screen {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      background: radial-gradient(circle, #1c2836 0%, #0a0e14 100%);
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      z-index: 200;
+      color: #fdf8eb;
+      text-align: center;
+      padding: 20px;
+      box-sizing: border-box;
+      transition: opacity 0.8s ease, visibility 0.8s;
+    }
+
+    #start-screen h1 {
+      font-family: 'Times New Roman', serif;
+      font-size: 48px;
+      margin-bottom: 15px;
+      color: #f3e5ab;
+      letter-spacing: 2px;
+      text-shadow: 0 4px 15px rgba(0,0,0,0.8);
+    }
+
+    #start-screen p {
+      font-size: 19px;
+      max-width: 550px;
+      line-height: 1.6;
+      color: #c9b088;
+      margin-bottom: 35px;
+      font-style: italic;
+    }
+
+    .btn-start {
+      background: linear-gradient(135deg, #4a7c59 0%, #386044 100%);
+      color: #ffffff;
+      border: 2px solid #8c6d46;
+      padding: 18px 42px;
+      font-size: 20px;
+      border-radius: 40px;
+      cursor: pointer;
+      font-family: 'Georgia', serif;
+      box-shadow: 0 8px 25px rgba(0,0,0,0.6);
+      transition: transform 0.2s, background 0.2s, box-shadow 0.2s;
+    }
+
+    .btn-start:hover {
+      transform: scale(1.06);
+      background: linear-gradient(135deg, #5b966d 0%, #406d4e 100%);
+      box-shadow: 0 10px 30px rgba(99, 163, 117, 0.4);
+    }
+
+    /* Small Collapsible Icon Toggle */
+    #menu-toggle-btn {
+      position: absolute;
+      top: 15px;
+      left: 15px;
+      width: 42px;
+      height: 42px;
+      background: rgba(245, 235, 215, 0.95);
+      border: 2px solid #8c6d46;
+      border-radius: 50%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-size: 20px;
+      cursor: pointer;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.5);
+      z-index: 20;
+      transition: transform 0.2s, background 0.2s;
+    }
+
+    #menu-toggle-btn:hover {
+      transform: scale(1.08);
+      background: #f1e2c3;
+    }
+
+    /* Floating UI Control Panel */
+    #ui-overlay {
+      position: absolute;
+      top: 65px;
+      left: 15px;
+      background: rgba(245, 235, 215, 0.95);
+      border: 2px solid #8c6d46;
+      border-radius: 8px;
+      padding: 14px 16px;
+      color: #3a2613;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.4);
+      z-index: 10;
+      width: 240px;
+      display: none;
+    }
+
+    #ui-overlay h1 {
+      margin: 0 0 5px 0;
+      font-size: 15px;
+      font-family: 'Times New Roman', serif;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      border-bottom: 1px solid #8c6d46;
+      padding-bottom: 3px;
+    }
+
+    .stat-line {
+      font-size: 12px;
+      margin-top: 4px;
+      font-weight: bold;
+    }
+
+    .key-menu {
+      margin-top: 8px;
+      padding-top: 6px;
+      border-top: 1px dashed #8c6d46;
+      font-size: 11px;
+    }
+
+    .key-item {
+      margin-bottom: 3px;
+      display: flex;
+      justify-content: space-between;
+    }
+
+    .kbd {
+      background: #e2d3b7;
+      border: 1px solid #8c6d46;
+      border-radius: 3px;
+      padding: 1px 4px;
+      font-weight: bold;
+      font-family: monospace;
+    }
+
+    .btn-grow {
+      background: #4a7c59;
+      color: white;
+      border: none;
+      padding: 6px 12px;
+      border-radius: 4px;
+      cursor: pointer;
+      font-family: 'Georgia', serif;
+      font-size: 12px;
+      margin-top: 8px;
+      width: 100%;
+      transition: background 0.2s;
+    }
+
+    .btn-grow:hover { background: #386044; }
+
+    /* Modal Dialog */
+    .modal {
+      display: none; 
+      position: fixed; 
+      z-index: 100; 
+      left: 0; top: 0;
+      width: 100%; height: 100%; 
+      background-color: rgba(10, 15, 25, 0.85); 
+      justify-content: center;
+      align-items: center;
+    }
+
+    .modal-content {
+      background: #fdf8eb;
+      color: #2c1a0e;
+      padding: 30px;
+      border-radius: 12px;
+      text-align: center;
+      max-width: 420px;
+      border: 3px solid #8c6d46;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.7);
+    }
+
+    .modal-content h2 {
+      margin-top: 0;
+      color: #8b0000;
+      font-family: 'Times New Roman', serif;
+    }
+
+    .btn {
+      background-color: #4a7c59;
+      border: 1px solid #2d4e37;
+      color: #fff;
+      padding: 10px 20px;
+      font-size: 14px;
+      margin: 12px 6px 0 6px;
+      border-radius: 6px;
+      cursor: pointer;
+      font-family: 'Georgia', serif;
+    }
+
+    .btn:hover { background-color: #386044; }
+    .btn-close { background-color: #993d3d; border-color: #662626; }
+    .btn-close:hover { background-color: #7a2f2f; }
+  </style>
+</head>
+<body>
+
+  <!-- Start Screen Overlay -->
+  <div id="start-screen">
+    <h1>The Discovery of Gravity</h1>
+    <p>"Nature and Nature's laws lay hid in night: God said, Let Newton be! and all was light."</p>
+    <button class="btn-start" onclick="startJourney()">🍎 Begin the Journey of Newton’s Discovery</button>
+  </div>
+
+  <!-- Small Icon Button -->
+  <div id="menu-toggle-btn" onclick="toggleMenu()" title="Toggle Settings Menu">⚙️</div>
+
+  <!-- Collapsible Control Panel -->
+  <div id="ui-overlay">
+    <h1>Isaac's Laboratory</h1>
+    <div class="stat-line">Keystrokes: <span id="key-count">0</span></div>
+    <div class="stat-line">Growth Progress: <span id="growth-count">0</span>%</div>
+    <div class="stat-line">Season: <span id="season-display" style="color:#8b0000">Spring</span></div>
+    <div class="stat-line">Rain Intensity: <span id="rain-display">Clear</span></div>
+
+    <button class="btn-grow" onclick="manualGrow()">🌱 Water Tree (Force Grow)</button>
+
+    <div class="key-menu">
+      <div style="font-weight: bold; margin-bottom: 4px;">🎮 Key Controls:</div>
+      <div class="key-item"><span>Mash Keyboard</span><span class="kbd">Any Key</span></div>
+      <div class="key-item"><span>Cycle Seasons</span><span class="kbd">S</span></div>
+      <div class="key-item"><span>Call Lightning</span><span class="kbd">L</span></div>
+      <div class="key-item"><span>Summon Bees</span><span class="kbd">B</span></div>
+    </div>
+  </div>
+
+  <canvas id="gameCanvas"></canvas>
+
+  <div id="endModal" class="modal">
+    <div class="modal-content">
+      <h2>🍎 Universal Gravitation Discovered!</h2>
+      <p id="modal-text">Isaac Newton pondered under the apple tree, and gravity was proven!</p>
+      <p style="font-style: italic; color: #666; font-size: 13px;">"What goes up must come down."</p>
+      <button class="btn" onclick="restartGame()">🌱 Regrow Orchard</button>
+      <button class="btn btn-close" onclick="closeWebsite()">🚪 Exit Lab</button>
+    </div>
+  </div>
+
+  <script>
+    const canvas = document.getElementById('gameCanvas');
+    const ctx = canvas.getContext('2d');
+    const keyCountDisplay = document.getElementById('key-count');
+    const growthDisplay = document.getElementById('growth-count');
+    const seasonDisplay = document.getElementById('season-display');
+    const rainDisplay = document.getElementById('rain-display');
+    const endModal = document.getElementById('endModal');
+    const modalText = document.getElementById('modal-text');
+    const uiOverlay = document.getElementById('ui-overlay');
+    const startScreen = document.getElementById('start-screen');
+
+    let journeyStarted = false;
+
+    function startJourney() {
+      startScreen.style.opacity = '0';
+      setTimeout(() => {
+        startScreen.style.display = 'none';
+        journeyStarted = true;
+      }, 800);
+    }
+
+    function resizeCanvas() {
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+    }
+    window.addEventListener('resize', resizeCanvas);
+    resizeCanvas();
+
+    function toggleMenu() {
+      if (uiOverlay.style.display === 'block') {
+        uiOverlay.style.display = 'none';
+      } else {
+        uiOverlay.style.display = 'block';
+      }
+    }
+
+    // Core States
+    let totalKeys = 0;
+    let growthProgress = 0;
+    let gameOver = false;
+
+    // Rain System
+    let rainDrops = [];
+    let mashEnergy = 0;
+    let targetRainCount = 0;
+
+    // Seasons System
+    const seasons = ['Spring', 'Summer', 'Autumn', 'Winter'];
+    let seasonIndex = 0;
+
+    // Seasonal Color Palettes
+    const seasonalTreePalettes = [
+      { bark: "#5c4033", canopyBase: "#4a7c59", canopyTop: "#7dbf67", canopyHighlight: "#a4de82", blossoms: "#fce4ec" },
+      { bark: "#4a321a", canopyBase: "#1e4620", canopyTop: "#2d6a30", canopyHighlight: "#489e4c", blossoms: null },
+      { bark: "#3d2817", canopyBase: "#8b2500", canopyTop: "#d35400", canopyHighlight: "#f39c12", blossoms: null },
+      { bark: "#2c221e", canopyBase: "rgba(220, 221, 225, 0.45)", canopyTop: "rgba(240, 243, 244, 0.65)", canopyHighlight: "#ffffff", blossoms: null }
+    ];
+
+    // Lightning System
+    let lightningTimer = 0;
+    let lightningSegments = [];
+
+    // Newton Logic
+    let newton = { x: -80, y: 0, targetX: 0, state: 'waiting', walkFrame: 0, sitTimer: 0 };
+    let apple = { x: 0, y: 0, falling: false, hit: false };
+
+    // Wildlife
+    let creatures = [];
+    function spawnCreatures() {
+      creatures = [];
+      for(let i=0; i<4; i++) {
+        creatures.push({
+          type: 'butterfly',
+          x: Math.random() * window.innerWidth,
+          y: window.innerHeight - 200 - Math.random() * 100,
+          wingAngle: 0, vx: (Math.random() - 0.5) * 1.5, vy: (Math.random() - 0.5) * 0.8
+        });
+      }
+      for(let i=0; i<4; i++) {
+        creatures.push({
+          type: 'bee',
+          x: Math.random() * window.innerWidth,
+          y: window.innerHeight - 180 - Math.random() * 80,
+          wingAngle: 0, vx: (Math.random() - 0.5) * 2, vy: (Math.random() - 0.5) * 1.5
+        });
+      }
+    }
+    spawnCreatures();
+
+    function triggerLightningStrike() {
+      lightningTimer = 12;
+      lightningSegments = [];
+      let startX = Math.random() * (canvas.width * 0.6) + canvas.width * 0.2;
+      generateBolt(startX, 0, canvas.height - 80, 0);
+    }
+
+    function generateBolt(x, y, maxY, depth) {
+      if (y >= maxY || depth > 4) return;
+      let curX = x, curY = y;
+      while (curY < maxY) {
+        let nextY = curY + 15 + Math.random() * 25;
+        let nextX = curX + (Math.random() - 0.5) * 50;
+        lightningSegments.push({ x1: curX, y1: curY, x2: nextX, y2: nextY });
+        if (Math.random() < 0.25 && depth < 2) {
+          generateBolt(nextX, nextY, Math.min(maxY, nextY + 120), depth + 1);
+        }
+        curX = nextX; curY = nextY;
+      }
+    }
+
+    // Key Controls
+    window.addEventListener('keydown', (e) => {
+      if (!journeyStarted || gameOver) return;
+
+      const key = e.key.toLowerCase();
+      totalKeys++;
+      keyCountDisplay.textContent = totalKeys;
+
+      if (key === 's') {
+        seasonIndex = (seasonIndex + 1) % 4;
+        seasonDisplay.textContent = seasons[seasonIndex];
+      } else if (key === 'l') {
+        triggerLightningStrike();
+      } else if (key === 'b') {
+        spawnCreatures();
+      } else {
+        growthProgress = Math.min(100, growthProgress + 0.6);
+        mashEnergy = Math.min(100, mashEnergy + 8);
+      }
+
+      growthDisplay.textContent = Math.floor(growthProgress);
+      checkNewtonTrigger();
+    });
+
+    function manualGrow() {
+      if (!journeyStarted || gameOver) return;
+      growthProgress = Math.min(100, growthProgress + 4);
+      growthDisplay.textContent = Math.floor(growthProgress);
+      checkNewtonTrigger();
+    }
+
+    function checkNewtonTrigger() {
+      if (growthProgress >= 100 && newton.state === 'waiting') {
+        newton.state = 'walking';
+      }
+    }
+
+    // Main Game Loop
+    function animate() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+      const groundY = canvas.height - 80;
+      const centerX = canvas.width / 2;
+
+      // Dynamic Rain Decay
+      if (mashEnergy > 0) mashEnergy -= 0.15;
+      mashEnergy = Math.max(0, mashEnergy);
+
+      targetRainCount = Math.floor((mashEnergy / 100) * 120);
+
+      if (targetRainCount > 80) rainDisplay.textContent = "Heavy Storm";
+      else if (targetRainCount > 30) rainDisplay.textContent = "Moderate Rain";
+      else if (targetRainCount > 5) rainDisplay.textContent = "Light Drizzle";
+      else rainDisplay.textContent = "Clear";
+
+      while(rainDrops.length < targetRainCount) {
+        rainDrops.push({
+          x: Math.random() * (canvas.width + 200) - 100,
+          y: -20,
+          length: 12 + Math.random() * 12,
+          speed: 10 + Math.random() * 8,
+          opacity: 0.3 + Math.random() * 0.4
+        });
+      }
+      if (rainDrops.length > targetRainCount) {
+        rainDrops.length = Math.floor(targetRainCount);
+      }
+
+      // Dynamic Sky Gradient
+      let skyGradient = ctx.createLinearGradient(0, 0, 0, canvas.height);
+      if (seasonIndex === 0) {
+        skyGradient.addColorStop(0, "#73a5c6"); skyGradient.addColorStop(1, "#e8eed9");
+      } else if (seasonIndex === 1) {
+        skyGradient.addColorStop(0, "#3a88e9"); skyGradient.addColorStop(1, "#a0e0ff");
+      } else if (seasonIndex === 2) {
+        skyGradient.addColorStop(0, "#2c3e50"); skyGradient.addColorStop(0.7, "#d35400"); skyGradient.addColorStop(1, "#f39c12");
+      } else {
+        skyGradient.addColorStop(0, "#0b132b"); skyGradient.addColorStop(0.8, "#1c2541"); skyGradient.addColorStop(1, "#3a506b");
+      }
+      ctx.fillStyle = skyGradient;
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+      // Render Sun or Moon
+      drawSunAndMoon(seasonIndex);
+
+      // Lightning Effect
+      if (lightningTimer > 0) {
+        ctx.fillStyle = `rgba(240, 248, 255, ${lightningTimer / 25})`;
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+        ctx.save();
+        ctx.shadowColor = "#00e5ff"; ctx.shadowBlur = 20;
+        ctx.strokeStyle = "rgba(180, 240, 255, 0.9)";
+        ctx.lineWidth = 6; ctx.lineCap = "round";
+        ctx.beginPath();
+        for (let seg of lightningSegments) {
+          ctx.moveTo(seg.x1, seg.y1); ctx.lineTo(seg.x2, seg.y2);
+        }
+        ctx.stroke();
+        ctx.restore();
+        lightningTimer--;
+      }
+
+      // Ground & Hills
+      let hillColor = seasonIndex === 3 ? "#4a5568" : seasonIndex === 2 ? "#8e5d30" : "#52734d";
+      let groundColor = seasonIndex === 3 ? "#dcdde1" : seasonIndex === 2 ? "#5c4033" : "#385e38";
+
+      ctx.fillStyle = hillColor;
+      ctx.beginPath();
+      ctx.ellipse(centerX - 300, groundY + 50, 600, 180, 0, 0, Math.PI * 2);
+      ctx.fill();
+
+      ctx.fillStyle = groundColor;
+      ctx.fillRect(0, groundY, canvas.width, 80);
+
+      // Rain Particles
+      ctx.strokeStyle = "#a4c2d4";
+      ctx.lineWidth = 1.2;
+      for (let i = 0; i < rainDrops.length; i++) {
+        let r = rainDrops[i];
+        ctx.globalAlpha = r.opacity;
+        ctx.beginPath();
+        ctx.moveTo(r.x, r.y);
+        ctx.lineTo(r.x - 3, r.y + r.length);
+        ctx.stroke();
+        r.x -= 1; r.y += r.speed;
+        if (r.y > groundY) {
+          r.y = -10;
+          r.x = Math.random() * (canvas.width + 200) - 100;
+        }
+      }
+      ctx.globalAlpha = 1.0;
+
+      // Tree Render
+      drawProceduralTree(centerX, groundY, growthProgress);
+
+      // Newton Placement
+      newton.targetX = centerX - 42;
+      newton.y = groundY - 30;
+
+      if (newton.state === 'walking') {
+        newton.x += 0.45;
+        newton.walkFrame += 0.06;
+        if (newton.x >= newton.targetX) {
+          newton.x = newton.targetX;
+          newton.state = 'sitting';
+          newton.sitTimer = Date.now();
+        }
+      }
+
+      if (newton.state === 'sitting' && !apple.falling && !apple.hit) {
+        if (Date.now() - newton.sitTimer > 3000) {
+          apple.falling = true;
+          apple.x = centerX - 30;
+          apple.y = groundY - (160 * Math.min(1, growthProgress / 100));
+        }
+      }
+
+      if (newton.state !== 'waiting') {
+        drawNewtonCharacter(newton.x, newton.y, newton.state, newton.walkFrame);
+      }
+
+      // Apple Mechanics
+      if (apple.falling) {
+        drawApple(apple.x, apple.y);
+        apple.y += 5;
+
+        if (apple.y >= groundY - 55) {
+          apple.falling = false;
+          apple.hit = true;
+          newton.state = 'hit';
+          gameOver = true;
+          
+          setTimeout(() => {
+            modalText.textContent = `It took ${totalKeys} key actions to grow the tree, bring Isaac under it, and discover gravity!`;
+            endModal.style.display = 'flex';
+          }, 1000);
+        }
+      }
+
+      if (apple.hit) {
+        drawApple(centerX - 15, groundY - 12);
+        ctx.fillStyle = "#f1c40f";
+        ctx.font = "bold 16px Georgia";
+        ctx.fillText("💡 EUREKA!", centerX - 65, groundY - 75);
+      }
+
+      // Wildlife Behavior
+      creatures.forEach(c => {
+        if (targetRainCount > 60) {
+          c.vy = Math.min(c.vy + 0.1, 1.5);
+        } else {
+          c.vy = (Math.random() - 0.5) * 1.2;
+        }
+
+        c.x += c.vx;
+        c.y += c.vy;
+        c.wingAngle += 0.2;
+
+        if (c.x < 50 || c.x > canvas.width - 50) c.vx *= -1;
+        if (c.y < groundY - 220 || c.y > groundY - 10) c.vy *= -1;
+
+        if (c.type === 'butterfly') {
+          ctx.fillStyle = "#e67e22";
+          let scale = Math.sin(c.wingAngle) * 6;
+          ctx.beginPath();
+          ctx.ellipse(c.x - 3, c.y, Math.abs(scale), 6, 0.4, 0, Math.PI * 2);
+          ctx.ellipse(c.x + 3, c.y, Math.abs(scale), 6, -0.4, 0, Math.PI * 2);
+          ctx.fill();
+        } else {
+          ctx.fillStyle = "#f1c40f";
+          ctx.beginPath(); ctx.ellipse(c.x, c.y, 4, 2.5, 0, 0, Math.PI * 2); ctx.fill();
+          ctx.fillStyle = "rgba(255,255,255,0.7)";
+          ctx.beginPath(); ctx.arc(c.x, c.y - 3, 2.5, 0, Math.PI * 2); ctx.fill();
+        }
+      });
+
+      requestAnimationFrame(animate);
+    }
+
+    // Sun & Moon Renderer
+    function drawSunAndMoon(season) {
+      ctx.save();
+      if (season === 0 || season === 1) {
+        let sunX = canvas.width - 120;
+        let sunY = 90;
+        ctx.shadowColor = "#f1c40f";
+        ctx.shadowBlur = 35;
+        ctx.fillStyle = "#f39c12";
+        ctx.beginPath();
+        ctx.arc(sunX, sunY, 32, 0, Math.PI * 2);
+        ctx.fill();
+
+        ctx.fillStyle = "#f1c40f";
+        ctx.beginPath();
+        ctx.arc(sunX, sunY, 26, 0, Math.PI * 2);
+        ctx.fill();
+      } else {
+        let moonX = canvas.width - 120;
+        let moonY = 90;
+
+        ctx.fillStyle = "rgba(255, 255, 255, 0.8)";
+        ctx.fillRect(moonX - 250, moonY - 40, 2, 2);
+        ctx.fillRect(moonX - 180, moonY + 30, 2, 2);
+        ctx.fillRect(moonX - 80, moonY - 20, 2, 2);
+
+        ctx.shadowColor = "#f5f6fa";
+        ctx.shadowBlur = 25;
+        ctx.fillStyle = "#f5f6fa";
+        ctx.beginPath();
+        ctx.arc(moonX, moonY, 28, 0, Math.PI * 2);
+        ctx.fill();
+
+        ctx.shadowBlur = 0;
+        ctx.fillStyle = season === 2 ? "#2c3e50" : "#0b132b";
+        ctx.beginPath();
+        ctx.arc(moonX + 10, moonY - 4, 24, 0, Math.PI * 2);
+        ctx.fill();
+      }
+      ctx.restore();
+    }
+
+    // Procedural Tree Drawing
+    function drawProceduralTree(x, y, progress) {
+      if (progress <= 0) return;
+
+      const palette = seasonalTreePalettes[seasonIndex];
+      const p = progress / 100;
+      const trunkHeight = 180 * p;
+      const trunkWidth = 26 * p;
+
+      ctx.fillStyle = palette.bark;
+      ctx.beginPath();
+      ctx.moveTo(x - trunkWidth / 2, y);
+      ctx.lineTo(x + trunkWidth / 2, y);
+      ctx.lineTo(x + (trunkWidth * 0.6) / 2, y - trunkHeight);
+      ctx.lineTo(x - (trunkWidth * 0.6) / 2, y - trunkHeight);
+      ctx.closePath();
+      ctx.fill();
+
+      if (p > 0.3) {
+        const bP = (p - 0.3) / 0.7;
+        drawBranch(x, y - trunkHeight * 0.6, x - 70 * bP, y - trunkHeight * 0.9, 10 * bP, palette.bark);
+        drawBranch(x, y - trunkHeight * 0.7, x + 70 * bP, y - trunkHeight * 0.95, 8 * bP, palette.bark);
+      }
+
+      if (p > 0.4) {
+        const fP = (p - 0.4) / 0.6;
+        drawLayeredFoliageCluster(x - 50 * fP, y - trunkHeight - 10, 48 * fP, palette.canopyBase, palette.canopyTop);
+        drawLayeredFoliageCluster(x + 50 * fP, y - trunkHeight - 15, 48 * fP, palette.canopyBase, palette.canopyTop);
+        drawLayeredFoliageCluster(x, y - trunkHeight - 40 * fP, 62 * fP, palette.canopyBase, palette.canopyTop);
+
+        drawLayeredFoliageCluster(x - 25 * fP, y - trunkHeight - 30 * fP, 35 * fP, palette.canopyTop, palette.canopyHighlight);
+        drawLayeredFoliageCluster(x + 25 * fP, y - trunkHeight - 25 * fP, 35 * fP, palette.canopyTop, palette.canopyHighlight);
+
+        if (palette.blossoms && p > 0.6) {
+          ctx.fillStyle = palette.blossoms;
+          const blossomCount = Math.floor(18 * fP);
+          for (let i = 0; i < blossomCount; i++) {
+            let bx = x + (Math.sin(i * 1.7) * 55 * fP);
+            let by = (y - trunkHeight - 20) + (Math.cos(i * 2.3) * 35 * fP);
+            ctx.beginPath();
+            ctx.arc(bx, by, 3 + (i % 3), 0, Math.PI * 2);
+            ctx.fill();
+          }
+        }
+
+        if (p > 0.8 && seasonIndex !== 3) {
+          drawApple(x - 40, y - trunkHeight + 10);
+          drawApple(x + 35, y - trunkHeight + 20);
+          if (!apple.falling && !apple.hit) {
+            drawApple(x - 30, y - trunkHeight + 5);
+          }
+        }
+      }
+    }
+
+    function drawBranch(x1, y1, x2, y2, width, color) {
+      ctx.strokeStyle = color;
+      ctx.lineWidth = width;
+      ctx.lineCap = "round";
+      ctx.beginPath();
+      ctx.moveTo(x1, y1);
+      ctx.lineTo(x2, y2);
+      ctx.stroke();
+    }
+
+    function drawLayeredFoliageCluster(x, y, radius, innerColor, outerColor) {
+      if (radius <= 0) return;
+      let grad = ctx.createRadialGradient(x - radius * 0.2, y - radius * 0.2, radius * 0.1, x, y, radius);
+      grad.addColorStop(0, outerColor);
+      grad.addColorStop(1, innerColor);
+      ctx.fillStyle = grad;
+      ctx.beginPath();
+      ctx.arc(x, y, radius, 0, Math.PI * 2);
+      ctx.fill();
+    }
+
+    function drawApple(x, y) {
+      ctx.fillStyle = "#d63031";
+      ctx.beginPath();
+      ctx.arc(x, y, 7, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.strokeStyle = "#2d3436";
+      ctx.lineWidth = 1;
+      ctx.beginPath(); ctx.moveTo(x, y - 6); ctx.lineTo(x + 2, y - 10); ctx.stroke();
+    }
+
+    // Scaled Newton Character
+    function drawNewtonCharacter(x, y, state, frame) {
+      ctx.save();
+      ctx.translate(x, y);
+
+      let legOffset = state === 'walking' ? Math.sin(frame) * 7 : 0;
+
+      if (state === 'sitting' || state === 'hit') {
+        // Torso & Coat
+        ctx.fillStyle = "#2c3e50"; 
+        ctx.fillRect(-12, -18, 27, 33);
+
+        // Legs Sitting
+        ctx.fillStyle = "#1a252f"; 
+        ctx.fillRect(3, 9, 27, 12);
+
+        // Shirt Collar
+        ctx.fillStyle = "#ffffff"; 
+        ctx.fillRect(-3, -15, 9, 6);
+
+        // Head
+        ctx.fillStyle = "#f3d3b8";
+        ctx.beginPath(); 
+        ctx.arc(1.5, -30, 12, 0, Math.PI * 2); 
+        ctx.fill();
+
+        // Powdered Wig
+        ctx.fillStyle = "#ecf0f1";
+        ctx.beginPath();
+        ctx.arc(-4.5, -36, 9, 0, Math.PI * 2);
+        ctx.arc(7.5, -36, 9, 0, Math.PI * 2);
+        ctx.arc(-7.5, -27, 7.5, 0, Math.PI * 2);
+        ctx.arc(10.5, -27, 7.5, 0, Math.PI * 2);
+        ctx.fill();
+
+        // Eye / Face Feature
+        ctx.fillStyle = "#2c3e50";
+        ctx.fillRect(6, -30, 3, 3);
+
+      } else {
+        // Torso & Coat
+        ctx.fillStyle = "#2c3e50"; 
+        ctx.fillRect(-12, -18, 27, 36);
+
+        // Legs Walking
+        ctx.fillStyle = "#1a252f"; 
+        ctx.fillRect(-9, 18, 9, 18 + legOffset); 
+        ctx.fillRect(3, 18, 9, 18 - legOffset);
+
+        // Shirt Collar
+        ctx.fillStyle = "#ffffff"; 
+        ctx.fillRect(-4.5, -15, 12, 6);
+
+        // Head
+        ctx.fillStyle = "#f3d3b8";
+        ctx.beginPath(); 
+        ctx.arc(1.5, -30, 12, 0, Math.PI * 2); 
+        ctx.fill();
+
+        // Powdered Wig
+        ctx.fillStyle = "#ecf0f1";
+        ctx.beginPath();
+        ctx.arc(-4.5, -36, 9, 0, Math.PI * 2);
+        ctx.arc(7.5, -36, 9, 0, Math.PI * 2);
+        ctx.arc(-7.5, -27, 7.5, 0, Math.PI * 2);
+        ctx.arc(10.5, -27, 7.5, 0, Math.PI * 2);
+        ctx.fill();
+      }
+      ctx.restore();
+    }
+
+    function restartGame() {
+      totalKeys = 0;
+      growthProgress = 0;
+      gameOver = false;
+      mashEnergy = 0;
+      newton = { x: -80, y: 0, targetX: 0, state: 'waiting', walkFrame: 0, sitTimer: 0 };
+      apple = { x: 0, y: 0, falling: false, hit: false };
+      keyCountDisplay.textContent = 0;
+      growthDisplay.textContent = 0;
+      endModal.style.display = 'none';
+    }
+
+    function closeWebsite() {
+      document.body.innerHTML = `
+        <div style="color: #f5ebd7; text-align: center; margin-top: 20%; font-family: Georgia, serif;">
+          <h1>🍎 Sir Isaac Newton Retired!</h1>
+          <p>Thank you for exploring the laws of physics.</p>
+        </div>
+      `;
+    }
+
+    animate();
+  </script>
+</body>
+</html>
