@@ -72,15 +72,9 @@ Libraries used: HTML5 Canvas API, Web DOM API
 Tools used: GitHub, GitHub Pages, Web Browser DevTools
 
 ### Implementation
-For Software:
-# Installation
-[commands]
 
-# Run
-[commands]
-
-### Project Documentation
-For Software:
+https://rosmin07.github.io/useless_project/
+site link
 
 # Screenshots (Add at least 3)
 <img width="128" height="64" alt="git (1)" src="a.jpeg" />
@@ -161,6 +155,7 @@ For Software:
 ### Project Demo
 # Video
 https://drive.google.com/file/d/1uusbhghWBOgSostKzM4XeSZsgEgfITyq/view?usp=sharing
+The Discovery of Gravity — an interactive web experiment built with pure HTML5 Canvas and Vanilla JavaScript. 💻✨
 
 
 
