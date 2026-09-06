@@ -71,11 +71,19 @@
       box-shadow: 0 10px 30px rgba(99, 163, 117, 0.4);
     }
 
-    /* Small Collapsible Icon Toggle */
-    #menu-toggle-btn {
+    /* Top Navigation Container */
+    #top-nav-bar {
       position: absolute;
       top: 15px;
       left: 15px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      z-index: 20;
+    }
+
+    /* Small Collapsible Icon Toggle */
+    #menu-toggle-btn {
       width: 42px;
       height: 42px;
       background: rgba(245, 235, 215, 0.95);
@@ -87,13 +95,31 @@
       font-size: 20px;
       cursor: pointer;
       box-shadow: 0 4px 12px rgba(0,0,0,0.5);
-      z-index: 20;
       transition: transform 0.2s, background 0.2s;
     }
 
     #menu-toggle-btn:hover {
       transform: scale(1.08);
       background: #f1e2c3;
+    }
+
+    /* Keyboard Prompt Banner */
+    .keyboard-prompt {
+      background: rgba(245, 235, 215, 0.95);
+      border: 2px solid #8c6d46;
+      color: #8b0000;
+      font-weight: bold;
+      font-size: 13px;
+      padding: 8px 14px;
+      border-radius: 20px;
+      letter-spacing: 1px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.5);
+      animation: pulse 1.5s infinite alternate;
+    }
+
+    @keyframes pulse {
+      0% { transform: scale(1); }
+      100% { transform: scale(1.05); }
     }
 
     /* Floating UI Control Panel */
@@ -221,8 +247,11 @@
     <button class="btn-start" onclick="startJourney()">🍎 Begin the Journey of Newton’s Discovery</button>
   </div>
 
-  <!-- Small Icon Button -->
-  <div id="menu-toggle-btn" onclick="toggleMenu()" title="Toggle Settings Menu">⚙️</div>
+  <!-- Menu Toggle & Message Banner -->
+  <div id="top-nav-bar">
+    <div id="menu-toggle-btn" onclick="toggleMenu()" title="Toggle Settings Menu">⚙️</div>
+    <div class="keyboard-prompt">💥 SMASH YOUR KEYBOARD! 💥</div>
+  </div>
 
   <!-- Collapsible Control Panel -->
   <div id="ui-overlay">
