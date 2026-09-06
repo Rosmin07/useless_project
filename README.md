@@ -63,17 +63,13 @@ But where's the fun in that? 😭
 
 
 ## Technical Details
-### Technologies/Components Used
-For Software:
-- [Languages used]
-- [Frameworks used]
-- [Libraries used]
-- [Tools used]
+Technologies/Components Used
 
-For Hardware:
-- [List main components]
-- [List specifications]
-- [List tools required]
+For Software:
+Languages used: HTML5, CSS3, JavaScript (ES6+)
+Frameworks used: None (Vanilla JavaScript)
+Libraries used: HTML5 Canvas API, Web DOM API
+Tools used: GitHub, GitHub Pages, Web Browser DevTools
 
 ### Implementation
 For Software:
