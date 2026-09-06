@@ -117,40 +117,57 @@ For Software:
 11.newton retired
 
 # Diagrams
-![Workflow](Add your workflow/architecture diagram here)
-*Add caption explaining your workflow*
++-----------------------------------------------------------------------------------+
+|                                   USER INPUT                                      |
+|            (Keyboard Press: Any Key | S (Seasons) | L (Lightning) | B (Bees))     |
++-----------------------------------------------------------------------------------+
+                                          |
+                                          v
++-----------------------------------------------------------------------------------+
+|                                EVENT LISTENER                                     |
+|  - Tracks key counts                    - Modifies state variables                |
+|  - Updates rain & energy intensity      - Increments growth percentage            |
++-----------------------------------------------------------------------------------+
+                                          |
+                                          v
++-----------------------------------------------------------------------------------+
+|                           CANVAS ANIMATION LOOP (60 FPS)                          |
+|  1. Sky & Sun/Moon Render   --> Based on active season palette                    |
+|  2. Dynamic Weather System  --> Renders rain droplets & lightning bolts           |
+|  3. Procedural Tree Engine  --> Scales trunk, branches, foliage & apples        |
+|  4. Entity System           --> Updates Newton state & wildlife vector paths      |
++-----------------------------------------------------------------------------------+
+                                          |
+                                          v
++-----------------------------------------------------------------------------------+
+|                              DISCOVERY TRIGGER                                    |
+|                   (Growth Progress reaches 100%)                                  |
+|                                         |                                         |
+|    +------------------------------------+------------------------------------+    |
+|    |                                                                         |    |
+|    v                                                                         v    |
+| [Isaac Newton Walks In]                                           [Apple Falls]   |
+|  Moves character from left                                         Triggers gravity|
+|  to under tree canopy.                                             physics drop.  |
+|    |                                                                         |    |
+|    +------------------------------------+------------------------------------+    |
+|                                         |                                         |
+|                                         v                                         |
+|                               [Collision & End Modal]                             |
+|                               Apple hits head -> Modal displayed                  |
++-----------------------------------------------------------------------------------+
 
-For Hardware:
-
-# Schematic & Circuit
-![Circuit](Add your circuit diagram here)
-*Add caption explaining connections*
-
-![Schematic](Add your schematic diagram here)
-*Add caption explaining the schematic*
-
-# Build Photos
-![Components](Add photo of your components here)
-*List out all components shown*
-
-![Build](Add photos of build process here)
-*Explain the build steps*
-
-![Final](Add photo of final product here)
-*Explain the final build*
 
 ### Project Demo
 # Video
 [Add your demo video link here]
 *Explain what the video demonstrates*
 
-# Additional Demos
-[Add any extra demo materials/links]
+
 
 ## Team Contributions
-- [Name 1]: [Specific contributions]
-- [Name 2]: [Specific contributions]
-- [Name 3]: [Specific contributions]
+- Rosmin Roy:Handled repository setup, GitHub Pages deployment, and project documentation.
+- Lena Marium Thomas: Developed the HTML5 Canvas graphics, keypress event controls, and animation physics.
 
 ---
 Made with ❤️ at TinkerHub Useless Projects 
