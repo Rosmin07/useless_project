@@ -40,7 +40,27 @@ In short, we asked the most important question in science:
 
 
 ### The Solution (that nobody asked for)
-[How are you solving it? Keep it fun!]
+
+We built an **extremely advanced scientific simulator** that solves a problem that never existed.
+
+Instead of simply letting an apple fall like a normal person, our simulator makes you **smash your keyboard repeatedly** to grow an entire apple tree. 🌳⌨️
+
+Once the tree is fully grown:
+
+* 🍎 An apple appears.
+* 👨‍🔬 Isaac Newton walks over.
+* 🌦️ You can change the season because why not?
+* ⚡ You can summon lightning for unnecessary drama.
+* 🐝 You can summon bees because every serious scientific experiment needs bees.
+* 🦋 Butterflies fly around to make the laboratory look fancy.
+* 💡 Finally, the apple falls and **GRAVITY IS DISCOVERED!**
+
+All of this could have been avoided by simply dropping an apple.
+
+But where's the fun in that? 😭
+
+**We didn't make gravity easier to understand. We made discovering it unnecessarily entertaining.**
+
 
 ## Technical Details
 ### Technologies/Components Used
