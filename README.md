@@ -20,7 +20,24 @@ Keep smashing until the tree is fully grown, Newton arrives, and the legendary a
 Because apparently, discovering gravity requires **100% keyboard abuse and 0% actual science**. 😂
 
 ### The Problem (that doesn't exist)
-[What ridiculous problem are you solving?]
+
+Sir Isaac Newton had a serious problem: **gravity existed, but nobody had bothered to make discovering it unnecessarily complicated.**
+
+How was Newton supposed to discover gravity while simply sitting under a tree? Where was the dramatic weather? Where were the butterflies? Where were the bees? And most importantly… **who was going to grow the apple tree by smashing random keys on a keyboard?**
+
+Our project solves this completely imaginary crisis by forcing the user to:
+
+* Mash the keyboard like their life depends on it.
+* Grow an entire apple tree through pure button-mashing power.
+* Change the seasons for absolutely no scientific reason.
+* Summon bees whenever they feel like it.
+* Call lightning from the sky because apparently Newton needed special effects.
+* Finally wait for an apple to fall so gravity can take all the credit.
+
+In short, we asked the most important question in science:
+
+**“What if discovering gravity was basically a video game?”**
+
 
 ### The Solution (that nobody asked for)
 [How are you solving it? Keep it fun!]
